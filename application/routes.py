@@ -1,10 +1,6 @@
 from application import app
 from flask import render_template, request, json, jsonify
-from sklearn import preprocessing
-from sklearn.preprocessing import OneHotEncoder
 import requests
-import numpy
-import pandas as pd
 
 #decorator to access the app
 @app.route("/")
@@ -30,12 +26,10 @@ def bankclassify():
     input_data = json.dumps({"age": age, "job": job, "marital": marital, "education": education, "default": default, "balance": balance, "housing": housing, "loan": loan})
 
     #url for bank marketing model
-    #url = "http://localhost:5000/api"
-    url = "https://bank-model-app.herokuapp.com/api"
-  
+    url = "http://localhost:5000/api"
+
     #post data to url
     results =  requests.post(url, input_data)
 
     #send input values and prediction result to index.html for display
     return render_template("index.html", age = age, job = job, marital = marital, education = education, default = default, balance = balance, housing = housing, loan = loan,  results=results.content.decode('UTF-8'))
-  
